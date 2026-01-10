@@ -26,46 +26,43 @@ public class Program1
 
         Console.WriteLine("\n=== Witamy w Bankomacie ===");
 
-        KartaBankomatowa karta = null;
-
         // KROK 1: SYMULACJA WŁOŻENIA KARTY (Wybór z listy)
-        karta = WybierzKarte(atm);
+        KartaBankomatowa karta = WybierzKarte(atm);
         if (karta == null) return;
 
-        // GŁÓWNA PĘTLA SESJI
-        while (true)
+        // KROK 2: JEDNORAZOWA WERYFIKACJA PIN (Przed wejściem do menu)
+        if (!SesjaAutoryzacji(atm))
         {
-            // KROK 2: WERYFIKACJA PIN
-            if (!SesjaAutoryzacji(atm))
-            {
-                atm.ZwrocKarte();
-                break; // Zakończ, jeśli PIN niepoprawny
-            }
-
-            // KROK 3: MENU I TRANSAKCJE
-            if (!MenuTransakcji(atm))
-            {
-                atm.ZwrocKarte();
-                break; // Zakończ sesję
-            }
+            atm.ZwrocKarte();
+            Console.WriteLine("Błędny PIN. Karta została zwrócona.");
+            return;
         }
 
-        Console.WriteLine("\n=== Dziękujemy za skorzystanie z Bankomatu! ===");
-        // W metodzie Main lub tam gdzie masz Menu, dodaj opcję:
-        Console.WriteLine("3. Eksportuj listę kont do CSV");
-        string wybor = Console.ReadLine();
+        // KROK 3: GŁÓWNA PĘTLA SESJI (Teraz tylko menu, bez ponownego PINu)
+        bool czyKontynuowac = true;
+        while (czyKontynuowac)
+        {
+            // MenuTransakcji zwraca 'false' tylko gdy użytkownik wybierze "Zakończ"
+            czyKontynuowac = MenuTransakcji(atm);
+        }
 
-        if (wybor == "3")
+        atm.ZwrocKarte();
+        Console.WriteLine("\n=== Sesja zakończona. Pobierz kartę. ===");
+
+        // KROK 4: EKSPORT (Opcjonalny po zakończeniu sesji)
+        Console.WriteLine("\nCzy chcesz wygenerować raport kont do pliku CSV? (t/n)");
+        string wyborRaportu = Console.ReadLine();
+
+        if (wyborRaportu?.ToLower() == "t")
         {
             var konta = dataService.PobierzWszystkieKonta();
             var csvService = new CsvFileService();
-
-            // Plik zostanie utworzony tam gdzie plik .exe
             csvService.ExportujDoCsv(konta, "RaportKont.csv");
-            Console.WriteLine("Plik 'RaportKont.csv' został wygenerowany.");
+            Console.WriteLine("Plik 'RaportKont.csv' został wygenerowany w folderze bin.");
         }
-    }
 
+        Console.WriteLine("\n=== Dziękujemy za skorzystanie z Bankomatu! ===");
+    }
     // --- POMOCNICZE METODY INTERAKCJI ---
 
     private static KartaBankomatowa WybierzKarte(Bankomat atm)

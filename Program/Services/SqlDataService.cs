@@ -15,7 +15,6 @@ namespace Program.Services
             {
                 connection.Open();
 
-                // ZMIANA: Usunięto aliasy (k, kl, kar), używamy pełnych nazw tabel
                 string sql = @"
                     SELECT Konta.IDKonta, Klienci.Imie, Klienci.Nazwisko, Konta.Saldo, Karty.PINHash
                     FROM Konta
