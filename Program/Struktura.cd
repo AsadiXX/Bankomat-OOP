@@ -1,0 +1,125 @@
+﻿<?xml version="1.0" encoding="utf-8"?>
+<ClassDiagram MajorVersion="1" MinorVersion="1">
+  <Class Name="Program.Logic.Bankomat" Collapsed="true">
+    <Position X="3.75" Y="0.5" Width="1.5" />
+    <TypeIdentifier>
+      <HashCode>AAAAAAAQAAAAAAAAAAMAAAAAAAAUAAIAAAAAIAAAAAA=</HashCode>
+      <FileName>Logic\Bankomat.cs</FileName>
+    </TypeIdentifier>
+  </Class>
+  <Class Name="Program.Models.AmericanExpress" Collapsed="true">
+    <Position X="15" Y="1" Width="1.5" />
+    <TypeIdentifier>
+      <HashCode>AAAAAAAAAAAAAAAAAAAAAAACAAAAAAAAAAAAAAAAAAA=</HashCode>
+      <FileName>Models\AmericanExpress.cs</FileName>
+    </TypeIdentifier>
+  </Class>
+  <Class Name="Program.Models.BankomatException" Collapsed="true">
+    <Position X="11.25" Y="4" Width="1.5" />
+    <TypeIdentifier>
+      <HashCode>AAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAA=</HashCode>
+      <FileName>Models\BankomatException.cs</FileName>
+    </TypeIdentifier>
+  </Class>
+  <Class Name="Program.Models.KontoNotFoundException" Collapsed="true">
+    <Position X="10.75" Y="0.5" Width="1.5" />
+    <TypeIdentifier>
+      <HashCode>AAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAA=</HashCode>
+      <FileName>Models\BankomatException.cs</FileName>
+    </TypeIdentifier>
+  </Class>
+  <Class Name="Program.Models.InsufficientFundsException" Collapsed="true">
+    <Position X="12.5" Y="2.5" Width="1.5" />
+    <TypeIdentifier>
+      <HashCode>AAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAA=</HashCode>
+      <FileName>Models\BankomatException.cs</FileName>
+    </TypeIdentifier>
+  </Class>
+  <Class Name="Program.Models.InvalidPinFormatException" Collapsed="true">
+    <Position X="8.5" Y="1" Width="1.5" />
+    <TypeIdentifier>
+      <HashCode>AAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAA=</HashCode>
+      <FileName>Models\BankomatException.cs</FileName>
+    </TypeIdentifier>
+  </Class>
+  <Class Name="Program.Models.InvalidWithdrawalAmountException" Collapsed="true">
+    <Position X="12.75" Y="1" Width="1.5" />
+    <TypeIdentifier>
+      <HashCode>AAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAA=</HashCode>
+      <FileName>Models\BankomatException.cs</FileName>
+    </TypeIdentifier>
+  </Class>
+  <Class Name="Program.Models.KartaBankomatowa" Collapsed="true">
+    <Position X="15.75" Y="4.25" Width="1.5" />
+    <TypeIdentifier>
+      <HashCode>AAAAAABAAAAAAAAAAAAAAAgCAAAAAAAAACAAAEGAAAA=</HashCode>
+      <FileName>Models\KartaBankomatowa.cs</FileName>
+    </TypeIdentifier>
+  </Class>
+  <Class Name="Program.Models.KontoBankowe" Collapsed="true">
+    <Position X="9" Y="4.25" Width="1.5" />
+    <TypeIdentifier>
+      <HashCode>AIAAAAAAQIAAAAAAAAAAAAAAAAAAAAAAACIAAAAAAAA=</HashCode>
+      <FileName>Models\KontoBankowe.cs</FileName>
+    </TypeIdentifier>
+  </Class>
+  <Class Name="Program.Models.Mastercard" Collapsed="true">
+    <Position X="17" Y="1" Width="1.5" />
+    <TypeIdentifier>
+      <HashCode>AAAAAAAAAAAAAAAAAAAAAAACAAAAAAAAAAAAAAAAAAA=</HashCode>
+      <FileName>Models\Mastercard.cs</FileName>
+    </TypeIdentifier>
+  </Class>
+  <Class Name="Program.Models.Visa" Collapsed="true">
+    <Position X="14.5" Y="3" Width="1.5" />
+    <InheritanceLine Type="Program.Models.KartaBankomatowa" FixedToPoint="true">
+      <Path>
+        <Point X="16.5" Y="4.25" />
+        <Point X="16.5" Y="4.066" />
+        <Point X="15.125" Y="4.066" />
+        <Point X="15.125" Y="3.691" />
+      </Path>
+    </InheritanceLine>
+    <TypeIdentifier>
+      <HashCode>AAAAAAAAAAAAAAAAAAAAACACAAAAAAAAAAAAAAAAAAA=</HashCode>
+      <FileName>Models\Visa.cs</FileName>
+    </TypeIdentifier>
+  </Class>
+  <Class Name="Program.Models.VisaElectron" Collapsed="true">
+    <Position X="14.25" Y="2" Width="1.5" />
+    <TypeIdentifier>
+      <HashCode>AAAAAAAAAAAAAAAAAAAAAAACAAAAAAAAAAAAAAIAAAA=</HashCode>
+      <FileName>Models\VisaElectron.cs</FileName>
+    </TypeIdentifier>
+  </Class>
+  <Class Name="Program.Services.CsvFileService" Collapsed="true">
+    <Position X="7" Y="3.25" Width="1.5" />
+    <TypeIdentifier>
+      <HashCode>AAAAgAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAA=</HashCode>
+      <FileName>Services\CsvFileService.cs</FileName>
+    </TypeIdentifier>
+  </Class>
+  <Class Name="Program.Services.SqlDataService" Collapsed="true">
+    <Position X="7.25" Y="2.25" Width="1.5" />
+    <TypeIdentifier>
+      <HashCode>AAAAEAAAAAAAEAAAAAAAAAACAAAAAAAIAIAAAAAAAAE=</HashCode>
+      <FileName>Services\SqlDataService.cs</FileName>
+    </TypeIdentifier>
+    <Lollipop Position="0.2" />
+  </Class>
+  <Class Name="Program1" Collapsed="true">
+    <Position X="7" Y="4.25" Width="1.5" />
+    <TypeIdentifier>
+      <HashCode>BAAAAACAAAAAAAAAAIAAAAAAAAAAAAAAAAAAJAAAAAA=</HashCode>
+      <FileName>Program.cs</FileName>
+    </TypeIdentifier>
+  </Class>
+  <Interface Name="Program.Services.IDataService" Collapsed="true">
+    <Position X="9" Y="3.25" Width="1.5" />
+    <TypeIdentifier>
+      <HashCode>AAAAEAAAAAAAEAAAAAAAAAACAAAAAAAAAIAAAAAAAAE=</HashCode>
+      <FileName>Services\IDataService.cs</FileName>
+    </TypeIdentifier>
+  </Interface>
+  <Font Name="Segoe UI" Size="9" />
+</ClassDiagram>
