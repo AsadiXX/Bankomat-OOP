@@ -8,7 +8,7 @@ namespace Program.Models
 {
     public class VisaElectron : Visa
     {
-        // VisaElectron często ma większe ograniczenia, np. tylko debet
+        // VisaElectron może mieć większe ograniczenia, np. tylko debet (możliwa rozbudowa programu)
         public bool CzyTylkoDebet { get; private set; } = true;
 
         public VisaElectron(string numerKarty, string wlasciciel, string pin, int idKonta)

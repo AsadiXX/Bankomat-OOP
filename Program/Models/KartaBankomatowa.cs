@@ -20,7 +20,7 @@ namespace Program.Models
             // Walidacja PIN-u na poziomie modelu
             if (!WalidujFormatPin(pin))
             {
-                // Rzucamy wyjątek (Obsługa Wyjątków - Wymaganie 7)
+                // Rzucamy wyjątek
                 throw new InvalidPinFormatException("PIN musi składać się z 4 cyfr.");
             }
 

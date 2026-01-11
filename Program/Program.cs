@@ -20,7 +20,7 @@ public class Program1
     // START APLIKACJI
     public static void Main(string[] args)
     {
-        // 1. INICJALIZACJA USŁUG
+        // INICJALIZACJA USŁUG
         IDataService dataService = new SqlDataService();
         Bankomat atm = new Bankomat(dataService);
 
@@ -30,7 +30,7 @@ public class Program1
         KartaBankomatowa karta = WybierzKarte(atm);
         if (karta == null) return;
 
-        // KROK 2: JEDNORAZOWA WERYFIKACJA PIN (Przed wejściem do menu)
+        // KROK 2: WERYFIKACJA PIN (Przed wejściem do menu)
         if (!SesjaAutoryzacji(atm))
         {
             atm.ZwrocKarte();
@@ -38,7 +38,7 @@ public class Program1
             return;
         }
 
-        // KROK 3: GŁÓWNA PĘTLA SESJI (Teraz tylko menu, bez ponownego PINu)
+        // KROK 3: GŁÓWNA PĘTLA SESJI
         bool czyKontynuowac = true;
         while (czyKontynuowac)
         {
@@ -67,38 +67,87 @@ public class Program1
 
     private static KartaBankomatowa WybierzKarte(Bankomat atm)
     {
-        Console.WriteLine("\nProszę włożyć kartę (Wybierz numer karty do symulacji):");
-        for (int i = 0; i < TestoweKarty.Count; i++)
+        while (true) // Pętla będzie się powtarzać, aż napotka instrukcję 'return'
         {
-            Console.WriteLine($"  {i + 1}. {TestoweKarty[i].GetType().Name} - {TestoweKarty[i].NumerKarty.Substring(0, 4)}XXXX... (Właściciel: {TestoweKarty[i].Wlasciciel})");
-        }
-        Console.Write("Wybór: ");
+            Console.WriteLine("\nProszę włożyć kartę (Wybierz numer karty do symulacji):");
 
-        if (int.TryParse(Console.ReadLine(), out int wybor) && wybor > 0 && wybor <= TestoweKarty.Count)
-        {
-            var karta = TestoweKarty[wybor - 1];
-            if (atm.WlozKarte(karta))
+            for (int i = 0; i < TestoweKarty.Count; i++)
             {
-                return karta;
+                Console.WriteLine($"  {i + 1}. {TestoweKarty[i].GetType().Name} - {TestoweKarty[i].NumerKarty.Substring(0, 4)}XXXX... (Właściciel: {TestoweKarty[i].Wlasciciel})");
+            }
+
+            Console.Write("Wybór (1-3): ");
+            string wejscie = Console.ReadLine();
+
+            // Sprawdzamy, czy użytkownik wpisał liczbę i czy mieści się ona w zakresie listy kart
+            if (int.TryParse(wejscie, out int wybor) && wybor > 0 && wybor <= TestoweKarty.Count)
+            {
+                var karta = TestoweKarty[wybor - 1];
+
+                // Próba włożenia karty do obiektu bankomatu
+                if (atm.WlozKarte(karta))
+                {
+                    Console.WriteLine($"\n[SYSTEM]: Karta zaakceptowana. Witaj {karta.Wlasciciel}.");
+                    return karta; // Zwracamy kartę i kończymy metodę (pętla zostaje przerwana)
+                }
+                else
+                {
+                    Console.WriteLine("\n[BŁĄD]: Bankomat odrzucił tę kartę. Spróbuj innej.");
+                }
+            }
+            else
+            {
+                // Ten blok wykona się, gdy użytkownik wpisze np. 4, 0, "abc" lub zostawi puste pole
+                Console.ForegroundColor = ConsoleColor.Red;
+                Console.WriteLine("\n[BŁĄD]: Niepoprawny wybór. Wybierz numer od 1 do " + TestoweKarty.Count);
+                Console.ResetColor();
+
+                Console.WriteLine("Naciśnij dowolny klawisz, aby spróbować ponownie...");
+                Console.ReadKey();
+                Console.Clear(); // Czyścimy konsolę, aby menu wyświetliło się ponownie na czystym ekranie
             }
         }
-        Console.WriteLine("Niepoprawny wybór lub karta odrzucona.");
-        return null;
     }
 
     private static bool SesjaAutoryzacji(Bankomat atm)
     {
-        Console.Write("\nProszę wprowadzić PIN: ");
-        string pin = Console.ReadLine();
-        return atm.Autoryzuj(pin);
-    }
+        int proby = 3;
 
+        while (proby > 0)
+        {
+            Console.Write($"\nProszę wprowadzić PIN (Pozostało prób: {proby}): ");
+            string pin = Console.ReadLine();
+
+            // Wywołujemy autoryzację
+            if (atm.Autoryzuj(pin))
+            {
+                return true;
+            }
+            else
+            {
+                proby--;
+                if (proby > 0)
+                {
+                    Console.ForegroundColor = ConsoleColor.Yellow;
+                    Console.WriteLine("[BŁĄD]: Niepoprawny PIN.");
+                    Console.ResetColor();
+                }
+            }
+        }
+
+        // Dopiero tutaj, gdy wszystkie próby zawiodą:
+        Console.ForegroundColor = ConsoleColor.Red;
+        Console.WriteLine("\n[BŁĄD]: 3-krotnie podano błędny PIN. Sesja zakończona.");
+        Console.ResetColor();
+
+        return false;
+    }
     private static bool MenuTransakcji(Bankomat atm)
     {
-        Console.WriteLine("\n--- MENU ---");
+        Console.WriteLine("\n--- MENU BANKOMATU ---");
         Console.WriteLine("1. Wypłata Gotówki");
         Console.WriteLine("2. Zakończ sesję i wyjmij kartę");
-        Console.Write("Wybór: ");
+        Console.Write("Wybór (1-2): ");
 
         string wybor = Console.ReadLine();
 
@@ -107,10 +156,11 @@ public class Program1
             case "1":
                 return WypłataInteraktywna(atm);
             case "2":
-                return false; // Zakończenie sesji
+                Console.WriteLine("Zamykanie sesji...");
+                return false; // Zwraca false, co przerywa pętlę while w Main
             default:
-                Console.WriteLine("Niepoprawna opcja.");
-                return true; // Kontynuuj pętlę
+                Console.WriteLine("[BŁĄD]: Niepoprawna opcja. Wybierz 1 lub 2.");
+                return true; // Zwraca true, więc pętla w Main kręci się dalej
         }
     }
 
@@ -127,7 +177,10 @@ public class Program1
         {
             Console.WriteLine("Niepoprawny format kwoty.");
         }
-        return true; // Wróć do menu
+
+        Console.WriteLine("\nNaciśnij ENTER, aby wrócić do menu...");
+        Console.ReadLine();
+        return true;
     }
 
 }

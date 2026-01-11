@@ -28,7 +28,6 @@ namespace Program.Models
 
     /// <summary>
     /// Rzucany, gdy saldo konta jest niewystarczające do wykonania transakcji.
-    /// (Wymaganie 7: Obsługa wyjątków)
     /// </summary>
     public class InsufficientFundsException : BankomatException
     {

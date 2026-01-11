@@ -65,34 +65,16 @@ namespace Program.Logic
         /// </summary>
         public bool Autoryzuj(string pin)
         {
-            if (_wlozonaKarta == null)
+            if (_wlozonaKarta == null) return false;
+
+            if (_wlozonaKarta.PIN == pin)
             {
-                Console.WriteLine("[BANKOMAT] Błąd: Brak włożonej karty.");
+                return true;
+            }
+            else
+            {
                 return false;
             }
-
-            // Walidacja formatu PIN na poziomie KartaBankomatowa (Wymaganie 8)
-            try
-            {
-                // PIN jest weryfikowany w klasie SqlDataService
-                if (_dataService.WalidujPin(_wlozonaKarta.IDKonta, pin))
-                {
-                    Console.WriteLine("[BANKOMAT] PIN poprawny. Sesja autoryzowana.");
-                    return true;
-                }
-                else
-                {
-                    Console.WriteLine("[BANKOMAT] Błąd autoryzacji: Niepoprawny PIN!");
-                }
-            }
-            catch (InvalidPinFormatException ex)
-            {
-                Console.WriteLine($"[BANKOMAT] Błąd: {ex.Message}");
-            }
-
-            // Zawsze czyścimy sesję po nieudanej autoryzacji
-            _wlozonaKarta = null;
-            return false;
         }
 
         /// <summary>
@@ -109,7 +91,7 @@ namespace Program.Logic
 
             try
             {
-                // 1. Walidacja Kwoty (Wymaganie 8)
+                // Walidacja Kwoty 
                 if (kwota <= 0)
                 {
                     throw new InvalidWithdrawalAmountException("Kwota wypłaty musi być większa od zera.");
@@ -119,21 +101,29 @@ namespace Program.Logic
                     throw new InvalidWithdrawalAmountException("Kwota wypłaty musi być wielokrotnością 10 PLN.");
                 }
 
-                // 2. Walidacja Salda (Wymaganie 7/8 - rzuca wyjątek z warstwy Services)
-                _dataService.CzyWystarczajaceSaldo(_wlozonaKarta.IDKonta, kwota); // Jeśli brakuje środków, rzuca InsufficientFundsException
-
-                // 3. Wykonanie Transakcji (CRUD: UPDATE)
+                // Walidacja Salda
+                // Pobieramy aktualne dane konta, żeby sprawdzić stan portfela
                 KontoBankowe konto = _dataService.PobierzKontoPoID(_wlozonaKarta.IDKonta);
+
+                if (kwota > konto.Saldo)
+                {
+                    // Rzucamy wyjątek, który zostanie złapany w catch poniżej
+                    throw new InsufficientFundsException(konto.Saldo, kwota);
+                }
+
+                // Wykonanie Transakcji (CRUD: UPDATE)
                 decimal noweSaldo = konto.Saldo - kwota;
 
                 if (_dataService.AktualizujSaldo(konto.IDKonta, noweSaldo))
                 {
-                    Console.WriteLine($"\n[BANKOMAT] Pomyślnie wypłacono: {kwota:C} PLN.");
-                    Console.WriteLine($"[BANKOMAT] Nowe saldo: {noweSaldo:C} PLN.");
+                    Console.ForegroundColor = ConsoleColor.Green;
+                    Console.WriteLine($"\n[BANKOMAT] Pomyślnie wypłacono: {kwota:C}");
+                    Console.WriteLine($"[BANKOMAT] Nowe saldo: {noweSaldo:C}");
+                    Console.ResetColor();
                     return true;
                 }
             }
-            // OBSŁUGA WYJĄTKÓW (Wymaganie 7)
+            // OBSŁUGA WYJĄTKÓW - tutaj ląduje program po "throw"
             catch (InvalidWithdrawalAmountException ex)
             {
                 Console.ForegroundColor = ConsoleColor.Red;
@@ -143,18 +133,17 @@ namespace Program.Logic
             catch (InsufficientFundsException ex)
             {
                 Console.ForegroundColor = ConsoleColor.Red;
-                Console.WriteLine($"[BANKOMAT BŁĄD TRANSAKCJI] {ex.Message}");
+                Console.WriteLine($"[BANKOMAT BŁĄD SALDA] {ex.Message}");
                 Console.ResetColor();
             }
             catch (BankomatException ex)
             {
-                // Łapanie innych błędów z systemu Bankomatu
                 Console.ForegroundColor = ConsoleColor.Red;
-                Console.WriteLine($"[BANKOMAT KRYTYCZNY BŁĄD] Wystąpił błąd: {ex.Message}");
+                Console.WriteLine($"[BANKOMAT BŁĄD SYSTEMOWY] {ex.Message}");
                 Console.ResetColor();
             }
 
-            return false;
+            return false; // Jeśli wystąpił jakikolwiek błąd, zwracamy false
         }
 
         public void ZwrocKarte()

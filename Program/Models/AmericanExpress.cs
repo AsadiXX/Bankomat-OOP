@@ -15,7 +15,7 @@ namespace Program.Models
 
         public override bool WeryfikujDostepnoscSystemu()
         {
-            // Często AMEX ma inne wymagania autoryzacyjne
+            // American Express może miec inne wymagania autoryzacyjne
             Console.WriteLine(" -> Weryfikacja karty w systemie American Express: OK.");
             return true;
         }
