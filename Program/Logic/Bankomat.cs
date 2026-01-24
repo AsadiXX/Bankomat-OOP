@@ -17,7 +17,7 @@ namespace Program.Logic
         private KartaBankomatowa _wlozonaKarta = null;
 
         // Konstruktor symulujący "instalację" bankomatu
-        // Tutaj definiujemy, jakie typy kart są akceptowane (Wymaganie projektowe)
+        // Tutaj definiujemy, jakie typy kart są akceptowane
         public Bankomat(IDataService dataService)
         {
             _dataService = dataService;
@@ -48,7 +48,7 @@ namespace Program.Logic
                 return false;
             }
 
-            // Karta jest akceptowana! Sprawdzamy system
+            // Karta jest akceptowana, sprawdzamy system
             if (!karta.WeryfikujDostepnoscSystemu())
             {
                 Console.WriteLine("[BANKOMAT] Błąd: System autoryzacyjny niedostępny.");

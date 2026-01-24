@@ -59,20 +59,18 @@ INSERT INTO	TypyKont (NazwaTypu) VALUES ('Osobiste');
 INSERT INTO Konta (NumerKonta, Saldo, IDKlienta, IDTypuKonta) VALUES ('12345678901234567890123456', 10000.00, 1, 1);
 INSERT INTO TypyKart (Nazwatypu) VALUES ('American Express');
 INSERT INTO Karty (NumerKarty, PINHash, IDKonta, IDTypuKarty, DataWaznosci)
-VALUES ('370000000000000', '0000', 100, 1, '2028-12-31'); 
+VALUES ('370000000000000', '0000', 100, 1, '2028-12-31');
 
 INSERT INTO Adresy (Ulica, Miasto, KodPocztowy) VALUES ('Kwiatowa 5', 'Kraków', '31-001');
 INSERT INTO Klienci (Imie, Nazwisko, PESEL, IDAdresu) VALUES ('Anna', 'Kowalska', '90020254321', 2);
-INSERT INTO	TypyKont (NazwaTypu) VALUES ('Osobiste');
-INSERT INTO Konta (NumerKonta, Saldo, IDKlienta, IDTypuKonta) VALUES ('4567123456789012', 1500.00, 2, 1);
+INSERT INTO Konta (NumerKonta, Saldo, IDKlienta, IDTypuKonta) VALUES ('20203030404050506060707080', 1500.00, 2, 1);
 INSERT INTO TypyKart (Nazwatypu) VALUES ('Visa');
 INSERT INTO Karty (NumerKarty, PINHash, IDKonta, IDTypuKarty, DataWaznosci)
-VALUES ('4567123456789012', '1234', 101, 2, '2027-01-01'); 
+VALUES ('4567123456789012', '1234', 101, 2, '2027-01-01');
 
 INSERT INTO Adresy (Ulica, Miasto, KodPocztowy) VALUES ('D³uga 10', 'Wroc³aw', '50-001');
 INSERT INTO Klienci (Imie, Nazwisko, PESEL, IDAdresu) VALUES ('Piotr', 'Nowak', '85030398765', 3);
-INSERT INTO	TypyKont (NazwaTypu) VALUES ('Osobiste');
-INSERT INTO Konta (NumerKonta, Saldo, IDKlienta, IDTypuKonta) VALUES ('5555432187654321', 500.00, 3, 1);
+INSERT INTO Konta (NumerKonta, Saldo, IDKlienta, IDTypuKonta) VALUES ('30304040505060607070808090', 500.00, 3, 1);
 INSERT INTO TypyKart (Nazwatypu) VALUES ('Mastercard');
 INSERT INTO Karty (NumerKarty, PINHash, IDKonta, IDTypuKarty, DataWaznosci)
-VALUES ('5555432187654321', '4321', 102, 3, '2026-06-01'); 
+VALUES ('5555432187654321', '4321', 102, 3, '2026-06-01');
